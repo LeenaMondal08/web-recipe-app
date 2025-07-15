@@ -1,7 +1,8 @@
 const searchBox=document.querySelector('.searchBox');
 const searchBtn=document.querySelector('.searchBtn');
 const recipeContainer=document.querySelector('.recipe-container');
-
+const recipeDetailsContent=document.querySelector('.recipe-details-content');
+const recipeCloseBtn=document.querySelector('.recipe-close-Btn');
 
 const fetchRecipes = async (query) => {
     recipeContainer.innerHTML="<h2>Fetching Recipe....</h2>";
@@ -27,6 +28,31 @@ response.meals.forEach(meal => {
                 recipeContainer.appendChild(recipeDiv);
 
     });
+}
+
+
+const fetchIngredients=(meal)=>{
+let ingredientsList="";
+for(let i=1;i<=20;i++){{
+    const ingredient=meal[`strIngredient${i}`];
+    if(ingredient){
+        const measure =meal[`strMeasure${i}`];
+        ingredientsList+=`<li>${measure} ${ingredient}</li>`
+    }
+    else{
+        break;
+    }
+}}
+return ingredientsList;
+}
+const openRecipePopup=(meal)=>{
+    recipeDetailsContent.innerHTML=`
+    <h2>${meal.strMeal}</h2>
+    <h3>Ingredents:</h3>
+    <ul>${fetchIngredients(meal)}</ul>
+    `
+    recipeDetailsContent.parentElement.style.display="block";
+    
 }
 searchBtn.addEventListener('click',(e)=>{
     e.preventDefault();
